@@ -11,6 +11,7 @@ const svg1_RENAME = d3.select("#lineChart1") // If you change this ID, you must 
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
+    //test
 const svg2_RENAME = d3.select("#lineChart2")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
