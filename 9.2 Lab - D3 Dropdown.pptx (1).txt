@@ -1,0 +1,463 @@
+Complete Homework 9 - D3 Dropdown Demo:
+Open last Wednesday’s demo8-nobel-interactive project in VSCode
+Or, download and unzip this project file: demo8-nobel-interactive.zip - Google Drive
+Watch these recordings:
+Recording Part 1 (Dropdown) -- start @ 7:34
+Recording Part 2 (Connecting Interactivity) -- start @ 1:43
+Follow my demos to the best of your ability
+Submit PDF to Canvas
+Lab Directions
+
+Submitting to Canvas
+Submit a PDF containing the following:
+2 screenshots of your resulting dash
+STEM selected
+Non-STEM selected
+A screenshot of your code
+
+Upcoming…
+Homework:
+Read 4. Webdev 101 | Data Visualization with Python and JavaScript, 2nd Edition
+Paulina's slides
+Lydia's slides
+Submit Homework 9 - D3 Dropdown Demo
+Submit Classwork 9 - Code Interactive Draft (Dynamic Trends)
+
+Tomorrow: D3 dropdown demo
+
+D3 Dropdown
+Lecture 9.2 (5/27)
+Speaker notes generated w/assistance from chatgpt
+
+Adding interactivity to Nobel Laureates
+
+Use last week’s demo8-nobel-interactive code
+If you weren’t here last Monday…
+Download here
+Unzip file (right-click, extract all files)
+Open unzipped folder in VS Code
+
+High-level steps
+Create working static viz (done!)
+Add non-functional widget
+Create update function
+Manually call update function
+Add event listener
+Update other existing widgets (if applicable)
+
+T5: Result
+
+Category Dropdown (D)
+
+D2: Create non-functional widget
+Code (html):
+        <div class="widget">
+            <label for="categorySelect">Select category type:</label>
+
+            <div class="select-container">
+                <select id="categorySelect">
+                    <option value="STEM">STEM</option>
+                    <option value="Non-STEM">Non-STEM</option>
+                    <!-- More options go here -->
+                </select>                    
+            </div>
+        </div>
+
+D2: Result
+
+D3: Create update function
+Steps:
+Create function with selectedCategory as param
+Filter data based on selectedCategory
+Remove existing lines
+Redraw line based on filtered data
+
+D3.1: Create update function
+    function updateChart(selectedCategory) {
+        // Filter the data based on the selected category
+
+        // Remove existing lines
+
+        // Redraw lines
+
+    }
+    // D3.1: Function to update the chart based on selected category
+    function updateChart(selectedCategory) {
+        // D3.2: Filter the data based on the selected category
+       
+
+        // .3: Remove existing lines
+        // D3.3: Remove existing lines
+
+        // D6.3: Remove the previous trendline
+
+
+        // .4: Redraw lines
+        // D3.4: Redraw line based on selected category data
+
+        // D6.4: Redraw the trendline automatically after the category changes
+
+    }
+
+
+D3.2: Filter data
+        var selectedCategoryData = flattenedData.filter(function(d) {
+            return d.category === selectedCategory;
+        });
+    // D3.1: Function to update the chart based on selected category
+    function updateChart(selectedCategory) {
+        // D3.2: Filter the data based on the selected category
+        var selectedCategoryData = flattenedData.filter(function(d) {
+            return d.category === selectedCategory;
+        });
+
+        // .3: Remove existing lines
+        // D3.3: Remove existing lines
+
+        // D6.3: Remove the previous trendline
+
+
+        // .4: Redraw lines
+        // D3.4: Redraw line based on selected category data
+
+        // D6.4: Redraw the trendline automatically after the category changes
+
+    }
+
+
+D3.3: Remove existing line(s)
+        svgLine.selectAll("path.data-line").remove();  // Remove previous lines
+    // D3.1: Function to update the chart based on selected category
+    function updateChart(selectedCategory) {
+        // D3.2: Filter the data based on the selected category
+        var selectedCategoryData = flattenedData.filter(function(d) {
+            return d.category === selectedCategory;
+        });
+
+        // D3.3: Remove existing lines
+        svgLine.selectAll("path.data-line").remove();  // Remove previous lines
+        // D6.3: Remove the previous trendline
+
+        // D3.4: Redraw line based on selected category data
+
+
+        // D6.4: Redraw the trendline automatically after the category changes
+
+    }
+
+
+D3.4: Redraw line based on filtered data 
+        svgLine.selectAll("path.data-line")
+            .data([selectedCategoryData]) // Bind the filtered data as a single line
+            .enter()
+            .append("path")
+            .attr("class", "data-line")
+            .attr("d", d3.line()
+                .x(d => xScale(d.year))
+                .y(d => yScale(d.count))
+            )
+            .style("stroke", "steelblue")
+            .style("fill", "none")
+            .style("stroke-width", 2);
+    // D3.1: Function to update the chart based on selected category
+    function updateChart(selectedCategory) {
+        // D3.2: Filter the data based on the selected category
+        var selectedCategoryData = flattenedData.filter(function(d) {
+            return d.category === selectedCategory;
+        });
+
+        // D3.3: Remove existing lines
+        svgLine.selectAll("path.data-line").remove();  // Remove previous lines
+        // D6.3: Remove the previous trendline
+
+        // D3.4: Redraw line based on selected category data
+        svgLine.selectAll("path.data-line")
+            .data([selectedCategoryData]) // Bind the filtered data as a single line
+            .enter()
+            .append("path")
+            .attr("class", "data-line")
+            .attr("d", d3.line()
+                .x(d => xScale(d.year))
+                .y(d => yScale(d.count))
+            )
+            .style("stroke", "steelblue")
+            .style("fill", "none")
+            .style("stroke-width", 2);
+
+        // D6.4: Redraw the trendline automatically after the category changes
+
+    }
+
+
+D4: Manually call update function
+Code:
+    // D4: Set "STEM" as the default category when the page loads
+    updateChart("STEM");
+    // updateChart(“Non-STEM”); // Try a different value as well
+
+Explanation:
+Call the update function with a hard-coded value. Try a few different values to make sure it works. Then, leave this code in so that when your page loads, there is a default value set.
+Put this code after updateChart() and before any event listeners
+    // D4: Set "STEM" as the default category when the page loads
+    updateChart("STEM");
+    // updateChart("Non-STEM"); // Try a different value as well
+
+
+D4: Result
+
+D5: Add dropdown event listener 
+Code:
+// Event listener for when the dropdown selection changes
+d3.select("#categorySelect").on("change", function() {
+   var selectedCategory = d3.select(this).property("value");
+   updateChart(selectedCategory); // Update the chart based on the selected option
+});   
+
+Explanation:
+When user selects an option on the dropdown, get the selected option. Then, update chart based on selected option. Put this code after your other event listener(s).
+    // 5: EVENT LISTENERS
+    // Event listener for trendline toggle
+    d3.select("#trendline-toggle").on("change", function() {
+        const isChecked = d3.select(this).property("checked"); // Get whether the checkbox is checked
+        // D6.2: Get the current selected category
+
+        // Show or hide the trendline based on the checkbox state
+        if (isChecked) {
+            // D6.2: Draw the trendline for the selected category
+            drawTrendline("STEM");
+        } else {
+            svgLine.selectAll(".trendline").remove(); // Remove the trendline if the checkbox is unchecked
+        }
+    });
+
+    // Event listener for when the dropdown selection changes
+    d3.select("#categorySelect").on("change", function() {
+        var selectedCategory = d3.select(this).property("value");
+        updateChart(selectedCategory); // Update the chart based on the selected option
+    });  
+
+
+D5: Result
+
+D6: Connect to trendline toggle
+Steps:
+Add selectedCategory parameter to drawTrendline()
+.remove() previous trendline in updateChart()
+Add selectedCategory in trendline toggle event listener
+Redraw toggle automatically in updateChart()
+
+D6.1: Add selectedCategory to drawTrendline()
+Code:
+function drawTrendline(selectedCategory) {
+    const filteredData = flattenedData.filter(d => d.category === selectedCategory);
+    const trendlineData = linearRegression(filteredData);
+	…
+
+Explanation:
+Take in a string, selected category, as a parameter. Filter the data based on that category. Then, use that filtered data when drawing calculating the trendline.
+    // Function to draw the trendline if the checkbox is checked
+    function drawTrendline(selectedCategory) {
+        // Filter data based on the selected category
+        const filteredData = flattenedData.filter(d => d.category === selectedCategory);
+        // const filteredData = flattenedData.filter(d => d.category === "STEM");
+
+        // Calculate trendline
+        const trendlineData = linearRegression(filteredData);
+
+        // Remove the previous trendline if it exists
+        svgLine.selectAll(".trendline").remove();
+
+        // Add the trendline path
+        svgLine.append("path")
+            .data([trendlineData])
+            .attr("class", "trendline")
+            .attr("d", d3.line()
+                .x(d => xScale(d.year))
+                .y(d => yScale(d.count))
+            )
+            .attr("fill", "none")
+            .attr("stroke", "gray")
+            .attr("stroke-width", 2)
+            .attr("stroke-dasharray", "5,5");
+    }
+
+
+D6.2: Update toggle event listener
+Code:const selectedCategory = d3.select("#categorySelect").property("value");
+if (isChecked) {
+    drawTrendline(selectedCategory); // Draw the trendline for selected category
+} else {
+     svgLine.selectAll(".trendline").remove(); // Remove if checkbox unchecked
+}
+
+Explanation:
+Get the currently selected category. Then, if the checkbox is checked, draw the trendline for that category.
+    // Event listener for trendline toggle
+    d3.select("#trendline-toggle").on("change", function() {
+        const isChecked = d3.select(this).property("checked"); // Get whether the checkbox is checked
+        const selectedCategory = d3.select("#categorySelect").property("value"); // 6.2: Get the current selected category
+
+        // Show or hide the trendline based on the checkbox state
+        if (isChecked) {
+            drawTrendline(selectedCategory); // 6.2: Draw the trendline for the selected category
+            // drawTrendline("STEM");
+        } else {
+            svgLine.selectAll(".trendline").remove(); // Remove the trendline if the checkbox is unchecked
+        }
+    });
+
+
+D6.3: .remove() trendline in updateChart()
+Code:
+svgLine.selectAll(".trendline").remove(); // Remove the previous trendline
+
+Explanation:
+Remove old trendline every time category is changed
+Put this code right under your other .remove() in your updateChart()
+    // Function to update the chart based on selected category
+    function updateChart(selectedGroup) {
+        // Filter the data based on the selected category
+        var dataFilter = flattenedData.filter(function(d) {
+            return d.category === selectedGroup;
+        });
+
+        // Remove existing lines
+        svgLine.selectAll("path.data-line").remove();  // Remove previous lines
+        svgLine.selectAll(".trendline").remove(); // Remove the previous trendline
+
+        // Group data by year and sum counts using d3.group
+        const groupedData = Array.from(d3.group(dataFilter, d => d.year), ([year, values]) => ({
+            year: year,
+            count: d3.sum(values, d => d.count) // Sum counts for each year
+        }));
+
+        // Update the lines with the filtered and grouped data
+        svgLine.selectAll("path.data-line")
+            .data([groupedData]) // Bind the filtered data as a single line
+            .enter()
+            .append("path")
+            .attr("class", "data-line")
+            .attr("d", d3.line()
+                .x(d => xScale(d.year))
+                .y(d => yScale(d.count))
+            )
+            .style("stroke", "steelblue")
+            .style("fill", "none")
+            .style("stroke-width", 2);
+
+        // Redraw the trendline automatically after the category changes
+
+    }
+
+
+
+D6.4: Auto-redraw trendline in updateChart()
+Code:
+if (d3.select("#trendline-toggle").property("checked")) { // If checkbox checked…
+      drawTrendline(selectedCategory); // …draw the trendline
+}
+
+What’s happening:
+If the trendline toggle is checked, then draw a trendline. When user selects a new category, the chart is updated, which causes trendline to be removed. We need to redraw it if toggle is checked.
+    // Function to update the chart based on selected category
+    function updateChart(selectedGroup) {
+        // Filter the data based on the selected category
+        var dataFilter = flattenedData.filter(function(d) {
+            return d.category === selectedGroup;
+        });
+
+        // Remove existing lines
+        svgLine.selectAll("path.data-line").remove();  // Remove previous lines
+        svgLine.selectAll(".trendline").remove(); // Remove the previous trendline
+
+        // Group data by year and sum counts using d3.group
+        const groupedData = Array.from(d3.group(dataFilter, d => d.year), ([year, values]) => ({
+            year: year,
+            count: d3.sum(values, d => d.count) // Sum counts for each year
+        }));
+
+        // Update the lines with the filtered and grouped data
+        svgLine.selectAll("path.data-line")
+            .data([groupedData]) // Bind the filtered data as a single line
+            .enter()
+            .append("path")
+            .attr("class", "data-line")
+            .attr("d", d3.line()
+                .x(d => xScale(d.year))
+                .y(d => yScale(d.count))
+            )
+            .style("stroke", "steelblue")
+            .style("fill", "none")
+            .style("stroke-width", 2);
+
+        // Redraw the trendline automatically after the category changes
+        if (d3.select("#trendline-toggle").property("checked")) {
+            drawTrendline(selectedGroup); // Draw the trendline if the checkbox is checked
+        }
+    }
+
+
+(jasper to-do: fix) D7: Connect to tooltip
+In tooltip code (line 130), change…
+.data(filteredFlattenedData) // Bind to manually filtered data
+
+…to:
+.data([selectedCategoryData]) // Bind to dynamically filtered data
+    // --- INTERACTIVITY ---
+    // Tooltip
+    const tooltip = d3.select("body") // Create tooltip
+        .append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("visibility", "hidden")
+        .style("background", "rgba(0, 0, 0, 0.7)")
+        .style("color", "white")
+        .style("padding", "10px")
+        .style("border-radius", "5px")
+        .style("font-size", "12px");
+
+    svgLine.selectAll(".data-point") // Create tooltip events
+        .data(filteredFlattenedData) // Bind only the filtered STEM data
+        // .data([selectedCategoryData]) // D7: Bind only to category selected by dropdown menu
+        .enter()
+        .append("circle")
+        .attr("class", "data-point")
+        .attr("cx", d => xScale(d.year))
+        .attr("cy", d => yScale(d.count))
+        .attr("r", 5)
+        .style("fill", "steelblue")
+        .style("opacity", 0)  // Make circles invisible by default
+        .on("mouseover", function(event, d) {
+            tooltip.style("visibility", "visible")
+                .html(`<strong>Year:</strong> ${d.year} <br><strong>Laureates:</strong> ${d.count}`)
+                .style("top", (event.pageY + 10) + "px") // Position relative to pointer
+                .style("left", (event.pageX + 10) + "px");
+
+            // Make the hovered circle visible
+            d3.select(this).style("opacity", 1);  // Set opacity to 1 on hover
+
+            // Create the large circle at the hovered point
+            svgLine.append("circle")
+                .attr("class", "hover-circle")
+                .attr("cx", xScale(d.year))  // Position based on the xScale (year)
+                .attr("cy", yScale(d.count)) // Position based on the yScale (count)
+                .attr("r", 6)  // Radius of the large circle
+                .style("fill", "steelblue") // Circle color
+                .style("stroke-width", 2);
+        })
+        .on("mousemove", function(event) {
+            tooltip.style("top", (event.pageY + 10) + "px")
+                .style("left", (event.pageX + 10) + "px");
+        })
+        .on("mouseout", function() {
+            tooltip.style("visibility", "hidden");
+
+            // Remove the hover circle when mouseout occurs
+            svgLine.selectAll(".hover-circle").remove();
+
+            // Make the circle invisible again
+            d3.select(this).style("opacity", 0);  // Reset opacity to 0 when not hovering
+        });
+
+
+Final result
