@@ -246,9 +246,9 @@ d3.csv("weather.csv?v=" + new Date().getTime()).then(data => {
             .datum(avgTrendlineData)
             .attr("class", "avg-trendline")
             .attr("d", avgTrendline)
-            .style("stroke", "#FFD700")
+            .style("stroke", "#FFEB3B")
             .style("stroke-width", 4)
-            .style("stroke-dasharray", "5,5")
+            .style("stroke-dasharray", "none")
             .style("fill", "none")
             .style("filter", "drop-shadow(0px 0px 2px rgba(0,0,0,0.3))")
             .on("mouseover", function(event) {
